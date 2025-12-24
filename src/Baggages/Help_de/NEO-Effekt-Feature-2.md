@@ -1,56 +1,27 @@
 # Effekt-Feature-2
 
-Zweites Feature-Flag für erweiterte Effekt-Eigenschaften und Kombinationen.
+Boolesches Feature-Flag (Ein/Aus). **Bedeutung ist effektabhängig.**
 
-**Wert:** Ein/Aus (Boolean)
+### HSV→RGB (Rainbow) Zusatzfunktion
 
-**Funktionsweise:**
-- Aktiviert sekundäre oder experimentelle Effekt-Features  
-- Oft in Kombination mit Feature-1 verwendet
-- Ermöglicht komplexere Effekt-Variationen
+Für Effekte, die `FastLEDMath::hsv2rgb_rainbow(h,s,v, yellowBoost, greenCorr)` verwenden, ist Feature‑2
+typischerweise als **„Yellow Brightness Compensation“** gedacht.
 
-## Feature-spezifische Verwendung (implementierte Effekte)
+## Effekt-spezifische Bedeutung
 
-**Fire (10):**
-- **EIN:** Blaue Flammen-Simulation (Cyan-Weiß-Farbverlauf)
-- **AUS:** Normale rote Flammen (Rot-Orange-Gelb-Weiß)
+| Effekt | Bedeutung |
+|---|---|
+| **Rainbow (ID 2)** | enable yellow brightness compensation (hsv2rgb_rainbow) |
+| **Pride2015 (ID 3)** | enable yellow brightness compensation (hsv2rgb_rainbow) |
+| **Juggle (ID 5)** | yellow brightness compensation (hsv2rgb_rainbow) |
+| **RGBW_Test (ID 8)** | enable yellow brightness compensation (hsv2rgb_rainbow) |
+| **Fire (ID 10)** | blue fire mode (on/off) |
+| **Sinelon (ID 13)** | bounce mode (linear bounce instead of sine) |
+| **Breathing (ID 16)** | rainbow mode (else fixed RGB color) |
+| **Comet (ID 19)** | rainbow mode (HSV rainbow instead of fixed RGB color) |
+| **Noise (ID 21)** | value-only mode (0=hue+value, 1=value only) |
+| **Lightning (ID 23)** | enable yellow brightness compensation (hsv2rgb_rainbow) [only used in colored mode] |
+| **Gradient (ID 24)** | enable yellow brightness compensation (hsv2rgb_rainbow) |
 
-**Sinelon (13):**
-- **EIN:** Linearer Bounce-Modus (gleichmäßige Geschwindigkeit)
-- **AUS:** Sinuswellen-Bewegung (natürliche Beschleunigung)
+| **Rainbow Cycle** | enable yellow brightness compensation (hsv2rgb_rainbow) |
 
-**Twinkle (14) & Sparkle (15):**
-- **Twinkle EIN:** Variable Helligkeit für jeden Funken
-- **Sparkle EIN:** Burst-Modus (gruppierte Funken-Explosionen)
-- **AUS:** Konstante Helligkeit/kontinuierliche Funken
-
-**Breathing (16), Strobe (17), Pulse (18):**
-- **Breathing EIN:** Regenbogen-Atmung (Farbe ändert sich)
-- **Strobe EIN:** Regenbogen-Stroboskop (schnell wechselnde Farben)
-- **Pulse EIN:** Regenbogen-Pulse (Farbe zykliert)
-- **AUS:** Verwendet konfigurierte Farbe
-
-**Comet (19) & Meteor (20):**
-- **Comet EIN:** Regenbogen-Schweif mit Farbverlauf
-- **Meteor EIN:** Mehrere Meteore gleichzeitig
-- **AUS:** Einzelfarben-Komet/einzelner Meteor
-
-## Effekte ohne Feature-2-Unterstützung
-
-Die folgenden implementierten Effekte nutzen Feature-2 derzeit nicht:
-- **Static (0):** Keine erweiterten Features
-- **Juggle (5):** Erweiterte Features in Entwicklung
-- **SK6812Test (8) / GarageDoor (9):** Spezialeffekte
-
-## Kombination mit Feature-1
-
-Beide Features können gleichzeitig aktiviert werden:
-- **Feature-1 + Feature-2 AUS:** Basis-Erweiterung
-- **Feature-1 AUS + Feature-2 EIN:** Alternative Erweiterung  
-- **Feature-1 + Feature-2 EIN:** Maximale Komplexität (experimentell)
-
-## Entwicklungsstand
-
-**Hinweis:** Die meisten Feature-2-Implementierungen sind experimentell und können in zukünftigen Versionen verfeinert werden.
-
-**Standard:** AUS (für stabiles Verhalten)

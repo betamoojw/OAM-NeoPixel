@@ -1,60 +1,28 @@
 # Effekt-Intensität
 
-Steuert die Intensität oder Stärke des ausgewählten Animationseffekts.
+Allgemeiner Intensitäts-/Helligkeitsparameter.
 
-**Wert:** 0-255 (0 = minimal, 255 = maximal)
+- **Wertbereich:** 0–255  
+- Wird von den meisten Effekten als **Master-Brightness** verwendet (HSV V oder RGB-Skalierung)
 
-**Funktionsweise:**
-- Beeinflusst verschiedene Aspekte je nach Effekt-Typ
-- Höhere Werte verstärken die Effekt-Eigenschaften
-- Niedrigere Werte reduzieren die Sichtbarkeit des Effekts
-- Unabhängig von der globalen Helligkeit
+## Effekt-spezifische Bedeutung
 
-## Effekt-spezifische Anwendung (implementierte Effekte)
+| Effekt | Bedeutung |
+|---|---|
+| **Rainbow (ID 2)** | brightness (HSV V) |
+| **Pride2015 (ID 3)** | master brightness (0..255) |
+| **Juggle (ID 5)** | master brightness (HSV V) |
+| **RGBW_Test (ID 8)** | overall brightness reference (used in rainbow/white) |
+| **GarageDoor (ID 9)** | master brightness scaling for all phase colors (0..255) |
+| **Fire (ID 10)** | master brightness scaling (0..255) |
+| **Theater Chase (ID 11)** | master brightness scaling for RGB |
+| **Sinelon (ID 13)** | brightness scaling (HSV V / RGB scale) |
+| **Breathing (ID 16)** | max brightness (0 = off) |
+| **Comet (ID 19)** | head brightness / overall brightness scaling |
+| **Noise (ID 21)** | master brightness (HSV V) |
+| **Palette (ID 22)** | master brightness (scales RGB) |
+| **Lightning (ID 23)** | peak brightness (0..255) |
+| **Gradient (ID 24)** | brightness (HSV V) |
+| **Rainbow Cycle** | brightness (HSV V) |
 
-**Static (0):**
-- Steuert die Gesamthelligkeit der statischen Farbe
-- 0 = ausgeschaltet, 255 = maximale Helligkeit
 
-**Wipe (1):**
-- Beeinflusst die Helligkeit des Wipe-Effekts
-- Wird mit der globalen Helligkeit kombiniert
-
-**Rainbow (2):**
-- Steuert die Helligkeit des Regenbogen-Effekts
-- Angewendet über FastLEDMath::scale8()
-
-**Pride2015 (3):**
-- Beeinflusst die Gesamthelligkeit der Farbwellen
-- Komplexer FastLED-Effekt mit dynamischer Helligkeitsmodulation
-
-**Confetti (4):**
-- Steuert die Helligkeit der zufälligen Pixel
-- Höhere Werte = hellere Konfetti-Pixel
-
-**Juggle (5):**
-- Beeinflusst die Helligkeit der Sinuswellen-Punkte
-- Angewendet auf die berechneten Farbwerte
-
-**BPM (6):**
-- Steuert die Gesamthelligkeit des Beat-Effekts
-- Kombiniert mit der Beat-basierten Helligkeitsmodulation
-
-**Cylon (7):**
-- Beeinflusst die Helligkeit des springenden Punkts
-- Höhere Werte = hellerer Schweif
-
-**SK6812Test (8) / GarageDoor (9):**
-- Spezielle Testeffekte mit eigener Intensitätslogik
-
-## Nicht implementierte Effekte
-Die folgenden Effekte sind in der ETS-Auswahl verfügbar, aber noch nicht implementiert:
-- **Twinkle, Fire, Meteor:** Verwenden derzeit Standard-Solid-Effekt
-
-## Empfohlene Werte
-
-- **Subtile Effekte:** 64-128
-- **Standard-Intensität:** 128-192
-- **Maximale Wirkung:** 192-255
-
-**Hinweis:** Bei statischen Effekten (Static, Rainbow) hat die Intensität möglicherweise keine sichtbare Auswirkung.

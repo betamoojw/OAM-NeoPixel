@@ -1,56 +1,31 @@
 # Effekt-Feature-3
 
-Drittes Feature-Flag für hochspezialisierte und experimentelle Effekt-Eigenschaften.
+Boolesches Feature-Flag (Ein/Aus). **Bedeutung ist effektabhängig.**
 
-**Wert:** Ein/Aus (Boolean)
+### HSV→RGB (Rainbow) Zusatzfunktion
 
-**Funktionsweise:**
-- Aktiviert experimentelle oder ressourcenintensive Features
-- Meist für fortgeschrittene Anwender gedacht
-- Kann die Performance beeinflussen
+Für Effekte, die `FastLEDMath::hsv2rgb_rainbow(h,s,v, yellowBoost, greenCorr)` verwenden, ist Feature‑3
+typischerweise als **„Green Correction“** gedacht.
 
-## Aktueller Implementierungsstand
+**Hinweis zu Ausnahmen:** Wenn ein Effekt Feature‑2 bereits für einen Modus-Schalter belegt (z. B. Bounce/Rainbow/Variable Brightness),
+kann es sein, dass Korrektur-Flags über Feature‑3 zusammengefasst oder nicht verfügbar sind. Siehe Tabelle unten.
 
-**Wichtiger Hinweis:** Feature-3 ist in der aktuellen OFM-NeoPixel-Version größtenteils noch nicht implementiert. Die meisten Effekte ignorieren dieses Flag derzeit.
+## Effekt-spezifische Bedeutung
 
-## Geplante Feature-spezifische Verwendung
+| Effekt | Bedeutung |
+|---|---|
+| **Rainbow (ID 2)** | enable green correction hooks (hsv2rgb_rainbow) |
+| **Pride2015 (ID 3)** | enable green correction hooks (hsv2rgb_rainbow) |
+| **Juggle (ID 5)** | green correction hooks (hsv2rgb_rainbow) |
+| **RGBW_Test (ID 8)** | enable green correction hooks (hsv2rgb_rainbow) |
+| **Sinelon (ID 13)** | enable HSV rainbow corrections (yellow/green hooks) |
+| **Breathing (ID 16)** | enables HSV->RGB correction flags (yellow + green) |
+| **Comet (ID 19)** | enable HSV rainbow correction hooks (yellow boost + green correction) |
+| **Noise (ID 21)** | enable green correction hooks (hsv2rgb_rainbow) |
+| **Lightning (ID 23)** | enable green correction hooks (hsv2rgb_rainbow) [only used in colored mode] |
+| **Gradient (ID 24)** | enable green correction hooks (hsv2rgb_rainbow) |
 
-**Rainbow (2):**
-- **EIN:** Spektral-korrekte Farbverläufe (geplant)
-- **AUS:** Standard FastLED RGB-Interpolation
+| **Rainbow Cycle** | enable green correction hooks (hsv2rgb_rainbow) |
 
-**Cylon (7):**
-- **EIN:** Physik-basierte Scanner-Bewegung mit Trägheit (geplant)
-- **AUS:** Linear bewegender Scanner
 
-**Pride2015 (3):**
-- **EIN:** Erweiterte mathematische Modulation (experimentell)
-- **AUS:** Standard Pride-Algorithmus
 
-**BPM (6):**
-- **EIN:** Komplexe Rhythmus-Analyse für adaptive Effekte (geplant)
-- **AUS:** Konstanter BPM-Algorithmus
-
-## Derzeit nicht unterstützte Features
-
-Die folgenden Funktionen sind für zukünftige Versionen geplant:
-- **Fire-Effekt:** 3D-Flammen-Simulation
-- **Twinkle-Effekt:** Constellation-Modus
-- **Theater Chase:** Adaptive Geschwindigkeit
-- **Physik-Simulation:** Erweiterte Bewegungsalgorithmen
-
-## Performance-Hinweise
-
-**Ressourcenverbrauch:**
-- Feature-3 ist für zukünftige ressourcenintensive Funktionen reserviert
-- Derzeit minimal Auswirkung auf Performance
-- Bei Implementierung werden CPU-intensive Algorithmen erwartet
-
-**Entwicklungsstand:**
-- **Experimentell:** Features können sich ändern
-- **Vorläufig:** Implementierung in Entwicklung
-- **Zukunftssicher:** API-Design für kommende Features
-
-**Standard:** AUS (stabile Performance)
-
-**Empfehlung:** Aktuell kann Feature-3 aktiviert bleiben ohne negative Auswirkungen, da es noch nicht vollständig implementiert ist.

@@ -23,10 +23,12 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%053" Offset="6" BitOffset="0" Name="NEO%C%SegmentGrouping" ParameterType="%AID%_PT-MinMaxValue" Text="Gruppierung" Value="0"/>
                 <!-- Byte 8..9: 16b -->
                 <Parameter Id="%AID%_UP-%TT%%CC%054" Offset="8" BitOffset="0" Name="NEO%C%SegmentSpacing" ParameterType="%AID%_PT-MinMaxValue" Text="Spacing" Value="0"/>
-                <!-- Byte 10: 0 (1b), 1 (1b) -->
+                <!-- Byte 10: 0 (1b), 1 (1b), 2 (1b), 3 (3b) -->
                 <Parameter Id="%AID%_UP-%TT%%CC%055" Offset="10" BitOffset="0" Name="NEO%C%SegmentReverseDirection" ParameterType="%AID%_PT-Boolean" Text="ReverseDirection" Value="0"/>
                 <Parameter Id="%AID%_UP-%TT%%CC%056" Offset="10" BitOffset="1" Name="NEO%C%SegmentMirrorEffect" ParameterType="%AID%_PT-Boolean" Text="Spiegelung des Effekts" Value="0"/>
-                <!-- Byte 10: Bits 2..7 frei -->
+                <Parameter Id="%AID%_UP-%TT%%CC%066" Offset="10" BitOffset="2" Name="NEO%C%EffectReverseDirection" ParameterType="%AID%_PT-Boolean" Text="Umgekehrte Richtung des Effekts" Value="0"/>
+                <Parameter Id="%AID%_UP-%TT%%CC%067" Offset="10" BitOffset="3" Name="NEO%C%SegmentPowerOnBehaviour" ParameterType="%AID%_PT-NEOPowerOnBehaviour" Text="Einschaltverhalten" Value="0"/>
+                <!-- Byte 10: Bits 6..7 frei -->
                 <!-- Byte 11: 8b -->
                 <Parameter Id="%AID%_UP-%TT%%CC%057" Offset="11" BitOffset="0" Name="NEO%C%NEOEffectType" ParameterType="%AID%_PT-NEOEffectType" Text="Effekt Typ" Value="0"/>
                 <!-- Byte 12: 8b -->
@@ -66,88 +68,114 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%063_R-%TT%%CC%06301" RefId="%AID%_UP-%TT%%CC%063" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%064_R-%TT%%CC%06401" RefId="%AID%_UP-%TT%%CC%064" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%065_R-%TT%%CC%06501" RefId="%AID%_UP-%TT%%CC%065" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%066_R-%TT%%CC%06601" RefId="%AID%_UP-%TT%%CC%066" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%067_R-%TT%%CC%06701" RefId="%AID%_UP-%TT%%CC%067" />
             </ParameterRefs>
             <ComObjectTable>
-              <!-- R -->
-              <ComObject Id="%AID%_O-%TT%%CC%005" Number="%K0%"  Name="%C%R"          Text="Rot"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                 ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- G -->
-              <ComObject Id="%AID%_O-%TT%%CC%006" Number="%K1%"  Name="%C%G"          Text="Grün"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- B -->
-              <ComObject Id="%AID%_O-%TT%%CC%007" Number="%K2%"  Name="%C%B"          Text="Blau"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- W -->
-              <ComObject Id="%AID%_O-%TT%%CC%008" Number="%K3%"  Name="%C%W"          Text="Weiß"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- CCT (Kelvin) -->
-              <ComObject Id="%AID%_O-%TT%%CC%009" Number="%K4%"  Name="%C%CCT"        Text="Farbtemperatur"      FunctionText="NeoPixel Segment %C%: Eingang, DPT 7.600"      ObjectSize="2 Bytes"  DatapointType="DPST-7-600"  WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- CCT Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%010" Number="%K5%"  Name="%C%CCTState"   Text="Farbtemperatur Status" FunctionText="NeoPixel Segment %C%: Ausgang, DPT 7.600" ObjectSize="2 Bytes" DatapointType="DPST-7-600"  WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- WW -->
-              <ComObject Id="%AID%_O-%TT%%CC%011" Number="%K6%" Name="%C%WW"         Text="Warmweiß"            FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"            ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- CW -->
-              <ComObject Id="%AID%_O-%TT%%CC%012" Number="%K7%" Name="%C%CW"         Text="Kaltweiß"            FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"            ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- H (Hue, 0..360° → 0..255) -->
-              <ComObject Id="%AID%_O-%TT%%CC%013" Number="%K8%" Name="%C%H"          Text="Farbton (Hue)"       FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.3"       ObjectSize="1 Byte"  DatapointType="DPST-5-3"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- S (0..100%) -->
-              <ComObject Id="%AID%_O-%TT%%CC%014" Number="%K9%" Name="%C%S"          Text="Sättigung"           FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.1"           ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- V (0..100%) -->
-              <ComObject Id="%AID%_O-%TT%%CC%015" Number="%K10%" Name="%C%V"          Text="Helligkeit (Value)"  FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.1"  ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- Fx -->
-              <ComObject Id="%AID%_O-%TT%%CC%016" Number="%K11%" Name="%C%Fx"         Text="Effekt"              FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"              ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- Fx Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%017" Number="%K12%" Name="%C%FxState"    Text="Effekt Status"       FunctionText="NeoPixel Segment %C%: Ausgang, DPT 5.10"       ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled"  TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- Preset -->
-              <ComObject Id="%AID%_O-%TT%%CC%018" Number="%K13%" Name="%C%Preset"     Text="Voreinstellung"      FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"      ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- Preset Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%019" Number="%K14%" Name="%C%PresetState" Text="Voreinstellung Status" FunctionText="NeoPixel Segment %C%: Ausgang, DPT 5.10" ObjectSize="1 Byte" DatapointType="DPST-5-10"  WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- RGB (3 bytes R,G,B) -->
-              <ComObject Id="%AID%_O-%TT%%CC%020" Number="%K15%" Name="%C%RGB"        Text="RGB"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"                 ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- RGB Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%021" Number="%K16%" Name="%C%RGBState"   Text="RGB Status"          FunctionText="NeoPixel Segment %C%: Ausgang, DPT 232.600"          ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- HSV (3 bytes H,S,V) -->
-              <ComObject Id="%AID%_O-%TT%%CC%022" Number="%K17%" Name="%C%HSV"        Text="HSV"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"                 ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- HSV Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%023" Number="%K18%" Name="%C%HSVState"   Text="HSV Status"          FunctionText="NeoPixel Segment %C%: Ausgang, DPT 232.600"          ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- RGBW (6 bytes R,G,B,W,ext1,ext2) -->
-              <ComObject Id="%AID%_O-%TT%%CC%024" Number="%K19%" Name="%C%RGBW"       Text="RGBW"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 251.600"                ObjectSize="6 Bytes"  DatapointType="DPST-251-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- RGBW Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%025" Number="%K20%" Name="%C%RGBWState"  Text="RGBW Status"         FunctionText="NeoPixel Segment %C%: Ausgang, DPT 251.600"         ObjectSize="6 Bytes"  DatapointType="DPST-251-600" WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- BriRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%026" Number="%K21%" Name="%C%BriRel"     Text="Helligkeit Relativ"  FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"  ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- RRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%027" Number="%K22%" Name="%C%RRel"       Text="Rot Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"         ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- GRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%028" Number="%K23%" Name="%C%GRel"       Text="Grün Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"        ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- BRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%029" Number="%K24%" Name="%C%BRel"       Text="Blau Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"        ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- WRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%030" Number="%K25%" Name="%C%WRel"       Text="Weiß Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"        ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- WWRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%031" Number="%K26%" Name="%C%WWRel"      Text="Warmweiß Relativ"    FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"    ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- CWRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%032" Number="%K27%" Name="%C%CWRel"      Text="Kaltweiß Relativ"    FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"    ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- HRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%033" Number="%K28%" Name="%C%HRel"       Text="Hue Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"         ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- SRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%034" Number="%K29%" Name="%C%SRel"       Text="Sättigung Relativ"   FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"   ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- VRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%035" Number="%K30%" Name="%C%VRel"       Text="Helligkeit (Value) Relativ" FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7" ObjectSize="1 Byte" DatapointType="DPST-3-7" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- FxRel -->
-              <ComObject Id="%AID%_O-%TT%%CC%036" Number="%K31%" Name="%C%FxRel"      Text="Effekt Relativ"      FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"      ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- RGBRel (3 bytes, relative encoding per Byte) -->
-              <ComObject Id="%AID%_O-%TT%%CC%037" Number="%K32%" Name="%C%RGBRel"     Text="RGB Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"         ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- HSVRel (3 bytes, relative encoding per Byte) -->
-              <ComObject Id="%AID%_O-%TT%%CC%038" Number="%K33%" Name="%C%HSVRel"     Text="HSV Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"         ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- RGBWRel (6 bytes total; first 4 = R,G,B,W) -->
-              <ComObject Id="%AID%_O-%TT%%CC%039" Number="%K34%" Name="%C%RGBWRel"    Text="RGBW Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 251.600"        ObjectSize="6 Bytes"  DatapointType="DPST-251-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
-              <!-- Segment Power -->
-              <ComObject Id="%AID%_O-%TT%%CC%040" Number="%K35%"  Name="%C%SegmentPower"     Text="Segment Ein/Aus"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 1.1"                 ObjectSize="1 Bit"   DatapointType="DPST-1-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+               <!-- Segment Power -->
+              <ComObject Id="%AID%_O-%TT%%CC%040" Number="%K0%"  Name="%C%SegmentPower"     Text="Segment Ein/Aus"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 1.1"                 ObjectSize="1 Bit"   DatapointType="DPST-1-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
               <!-- Segment Power Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%041" Number="%K36%"  Name="%C%SegmentPowerState" Text="Segment Ein/Aus Status"          FunctionText="NeoPixel Segment %C%: Ausgang, DPT 1.11"          ObjectSize="1 Bit"   DatapointType="DPST-1-11"   WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled"  TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%041" Number="%K1%"  Name="%C%SegmentPowerState" Text="Segment Ein/Aus Status"          FunctionText="NeoPixel Segment %C%: Ausgang, DPT 1.11"          ObjectSize="1 Bit"   DatapointType="DPST-1-11"   WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled"  TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
               <!-- Segment Brightness -->
-              <ComObject Id="%AID%_O-%TT%%CC%042" Number="%K37%"  Name="%C%SegmentBrightness" Text="Segment Helligkeit"          FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.1"          ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%042" Number="%K2%"  Name="%C%SegmentBrightness" Text="Segment Helligkeit"          FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.1"          ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
               <!-- Segment Brightness Status -->
-              <ComObject Id="%AID%_O-%TT%%CC%043" Number="%K38%"  Name="%C%SegmentBrightnessState" Text="Segment Helligkeit Status" FunctionText="NeoPixel Segment %C%: Ausgang, DPT 5.1" ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled"  TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%043" Number="%K3%"  Name="%C%SegmentBrightnessState" Text="Segment Helligkeit Status" FunctionText="NeoPixel Segment %C%: Ausgang, DPT 5.1" ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled"  TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- R -->
+              <ComObject Id="%AID%_O-%TT%%CC%005" Number="%K4%"  Name="%C%R"          Text="Rot"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                 ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- G -->
+              <ComObject Id="%AID%_O-%TT%%CC%006" Number="%K5%"  Name="%C%G"          Text="Grün"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- B -->
+              <ComObject Id="%AID%_O-%TT%%CC%007" Number="%K6%"  Name="%C%B"          Text="Blau"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- W -->
+              <ComObject Id="%AID%_O-%TT%%CC%008" Number="%K7%"  Name="%C%W"          Text="Weiß"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"                ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- CCT (Kelvin) -->
+              <ComObject Id="%AID%_O-%TT%%CC%009" Number="%K8%"  Name="%C%CCT"        Text="Farbtemperatur"      FunctionText="NeoPixel Segment %C%: Eingang, DPT 7.600"      ObjectSize="2 Bytes"  DatapointType="DPST-7-600"  WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- CCT Status -->
+              <ComObject Id="%AID%_O-%TT%%CC%010" Number="%K9%"  Name="%C%CCTState"   Text="Farbtemperatur Status" FunctionText="NeoPixel Segment %C%: Ausgang, DPT 7.600" ObjectSize="2 Bytes" DatapointType="DPST-7-600"  WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- WW -->
+              <ComObject Id="%AID%_O-%TT%%CC%011" Number="%K10%" Name="%C%WW"         Text="Warmweiß"            FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"            ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- CW -->
+              <ComObject Id="%AID%_O-%TT%%CC%012" Number="%K11%" Name="%C%CW"         Text="Kaltweiß"            FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"            ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- H (Hue, 0..360° → 0..255) -->
+              <ComObject Id="%AID%_O-%TT%%CC%013" Number="%K12%" Name="%C%H"          Text="Farbton (Hue)"       FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.3"       ObjectSize="1 Byte"  DatapointType="DPST-5-3"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- S (0..100%) -->
+              <ComObject Id="%AID%_O-%TT%%CC%014" Number="%K13%" Name="%C%S"          Text="Sättigung"           FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.1"           ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- V (0..100%) -->
+              <ComObject Id="%AID%_O-%TT%%CC%015" Number="%K14%" Name="%C%V"          Text="Helligkeit (Value)"  FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.1"  ObjectSize="1 Byte"  DatapointType="DPST-5-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx -->
+              <ComObject Id="%AID%_O-%TT%%CC%016" Number="%K15%" Name="%C%Fx"         Text="Effekt"              FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"              ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Status -->
+              <ComObject Id="%AID%_O-%TT%%CC%017" Number="%K16%" Name="%C%FxState"    Text="Effekt Status"       FunctionText="NeoPixel Segment %C%: Ausgang, DPT 5.10"       ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled"  TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Speed -->
+              <ComObject Id="%AID%_O-%TT%%CC%050" Number="%K17%"  Name="%C%FxSpeed"  Text="Effekt Geschwindigkeit"     FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"           ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Intensity -->
+              <ComObject Id="%AID%_O-%TT%%CC%051" Number="%K18%"  Name="%C%FxIntensity"  Text="Effekt Intensität"     FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"           ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Option 1 -->
+              <ComObject Id="%AID%_O-%TT%%CC%044" Number="%K19%"  Name="%C%FxOption1"  Text="Effekt Option 1"     FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"           ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Option 2 -->
+              <ComObject Id="%AID%_O-%TT%%CC%045" Number="%K20%"  Name="%C%FxOption2"  Text="Effekt Option 2"     FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"           ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Option 3 -->
+              <ComObject Id="%AID%_O-%TT%%CC%046" Number="%K21%"  Name="%C%FxOption3"  Text="Effekt Option 3"     FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"           ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Feature 1 -->
+              <ComObject Id="%AID%_O-%TT%%CC%047" Number="%K22%" Name="%C%FxFeature1" Text="Effekt Feature 1"    FunctionText="NeoPixel Segment %C%: Eingang, DPT 1.1"            ObjectSize="1 Bit"   DatapointType="DPST-1-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Fx Feature 2 -->
+              <ComObject Id="%AID%_O-%TT%%CC%048" Number="%K23%" Name="%C%FxFeature2" Text="Effekt Feature 2"    FunctionText="NeoPixel Segment %C%: Eingang, DPT 1.1"            ObjectSize="1 Bit"   DatapointType="DPST-1-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+               <!-- Fx Feature 3 -->
+              <ComObject Id="%AID%_O-%TT%%CC%049" Number="%K24%" Name="%C%FxFeature3" Text="Effekt Feature 3"    FunctionText="NeoPixel Segment %C%: Eingang, DPT 1.1"            ObjectSize="1 Bit"   DatapointType="DPST-1-1"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Preset -->
+              <ComObject Id="%AID%_O-%TT%%CC%018" Number="%K25%" Name="%C%Preset"     Text="Voreinstellung"      FunctionText="NeoPixel Segment %C%: Eingang, DPT 5.10"      ObjectSize="1 Byte"  DatapointType="DPST-5-10"   WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- Preset Status -->
+              <ComObject Id="%AID%_O-%TT%%CC%019" Number="%K26%" Name="%C%PresetState" Text="Voreinstellung Status" FunctionText="NeoPixel Segment %C%: Ausgang, DPT 5.10" ObjectSize="1 Byte" DatapointType="DPST-5-10"  WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- RGB (3 bytes R,G,B) -->
+              <ComObject Id="%AID%_O-%TT%%CC%020" Number="%K27%" Name="%C%RGB"        Text="RGB"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"                 ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- RGB Status -->
+              <ComObject Id="%AID%_O-%TT%%CC%021" Number="%K28%" Name="%C%RGBState"   Text="RGB Status"          FunctionText="NeoPixel Segment %C%: Ausgang, DPT 232.600"          ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- HSV (3 bytes H,S,V) -->
+              <ComObject Id="%AID%_O-%TT%%CC%022" Number="%K29%" Name="%C%HSV"        Text="HSV"                 FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"                 ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- HSV Status -->
+              <ComObject Id="%AID%_O-%TT%%CC%023" Number="%K30%" Name="%C%HSVState"   Text="HSV Status"          FunctionText="NeoPixel Segment %C%: Ausgang, DPT 232.600"          ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- RGBW (6 bytes R,G,B,W,ext1,ext2) -->
+              <ComObject Id="%AID%_O-%TT%%CC%024" Number="%K31%" Name="%C%RGBW"       Text="RGBW"                FunctionText="NeoPixel Segment %C%: Eingang, DPT 251.600"                ObjectSize="6 Bytes"  DatapointType="DPST-251-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- RGBW Status -->
+              <ComObject Id="%AID%_O-%TT%%CC%025" Number="%K32%" Name="%C%RGBWState"  Text="RGBW Status"         FunctionText="NeoPixel Segment %C%: Ausgang, DPT 251.600"         ObjectSize="6 Bytes"  DatapointType="DPST-251-600" WriteFlag="Disabled" UpdateFlag="Disabled" ReadFlag="Enabled" TransmitFlag="Enabled"  CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- BriRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%026" Number="%K33%" Name="%C%BriRel"     Text="Helligkeit Relativ"  FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"  ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- RRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%027" Number="%K34%" Name="%C%RRel"       Text="Rot Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"         ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- GRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%028" Number="%K35%" Name="%C%GRel"       Text="Grün Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"        ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- BRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%029" Number="%K36%" Name="%C%BRel"       Text="Blau Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"        ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- WRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%030" Number="%K37%" Name="%C%WRel"       Text="Weiß Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"        ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- WWRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%031" Number="%K38%" Name="%C%WWRel"      Text="Warmweiß Relativ"    FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"    ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- CWRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%032" Number="%K39%" Name="%C%CWRel"      Text="Kaltweiß Relativ"    FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"    ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- HRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%033" Number="%K40%" Name="%C%HRel"       Text="Hue Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"         ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- SRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%034" Number="%K41%" Name="%C%SRel"       Text="Sättigung Relativ"   FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"   ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- VRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%035" Number="%K42%" Name="%C%VRel"       Text="Helligkeit (Value) Relativ" FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7" ObjectSize="1 Byte" DatapointType="DPST-3-7" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- FxRel -->
+              <ComObject Id="%AID%_O-%TT%%CC%036" Number="%K43%" Name="%C%FxRel"      Text="Effekt Relativ"      FunctionText="NeoPixel Segment %C%: Eingang, DPT 3.7"      ObjectSize="1 Byte"  DatapointType="DPST-3-7"    WriteFlag="Enabled"  UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- RGBRel (3 bytes, relative encoding per Byte) -->
+              <ComObject Id="%AID%_O-%TT%%CC%037" Number="%K44%" Name="%C%RGBRel"     Text="RGB Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"         ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- HSVRel (3 bytes, relative encoding per Byte) -->
+              <ComObject Id="%AID%_O-%TT%%CC%038" Number="%K45%" Name="%C%HSVRel"     Text="HSV Relativ"         FunctionText="NeoPixel Segment %C%: Eingang, DPT 232.600"         ObjectSize="3 Bytes"  DatapointType="DPST-232-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <!-- RGBWRel (6 bytes total; first 4 = R,G,B,W) -->
+              <ComObject Id="%AID%_O-%TT%%CC%039" Number="%K46%" Name="%C%RGBWRel"    Text="RGBW Relativ"        FunctionText="NeoPixel Segment %C%: Eingang, DPT 251.600"        ObjectSize="6 Bytes"  DatapointType="DPST-251-600" WriteFlag="Enabled" UpdateFlag="Disabled" ReadFlag="Disabled" TransmitFlag="Disabled" CommunicationFlag="Enabled" ReadOnInitFlag="Disabled" />
             </ComObjectTable>
             <ComObjectRefs>
+              <!-- Segment Power -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%040_R-%TT%%CC%04001" RefId="%AID%_O-%TT%%CC%040" Text="{{0:%C%}}: Ein/Aus" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Segment Power State -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%041_R-%TT%%CC%04101" RefId="%AID%_O-%TT%%CC%041" Text="{{0:%C%}}: Ein/Aus Status" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Segment Brightness -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%042_R-%TT%%CC%04201" RefId="%AID%_O-%TT%%CC%042" Text="{{0:%C%}}: Helligkeit" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Segment Brightness State -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%043_R-%TT%%CC%04301" RefId="%AID%_O-%TT%%CC%043" Text="{{0:%C%}}: Helligkeit Status" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
               <!-- R -->
               <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" Text="{{0:%C%}}: Rot" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" />
               <!-- G -->
@@ -174,6 +202,22 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%016_R-%TT%%CC%01601" RefId="%AID%_O-%TT%%CC%016" Text="{{0:%C%}}: Effekt" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
               <!-- Fx Status -->
               <ComObjectRef Id="%AID%_O-%TT%%CC%017_R-%TT%%CC%01701" RefId="%AID%_O-%TT%%CC%017" Text="{{0:%C%}}: Effekt Status" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Speed -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%050_R-%TT%%CC%05001" RefId="%AID%_O-%TT%%CC%050" Text="{{0:%C%}}: Effekt Geschwindigkeit" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Intensity -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%051_R-%TT%%CC%05101" RefId="%AID%_O-%TT%%CC%051" Text="{{0:%C%}}: Effekt Intensitität" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Option 1 -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%044_R-%TT%%CC%04401" RefId="%AID%_O-%TT%%CC%044" Text="{{0:%C%}}: Effekt Option 1" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Option 2 -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%045_R-%TT%%CC%04501" RefId="%AID%_O-%TT%%CC%045" Text="{{0:%C%}}: Effekt Option 2" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Option 3 -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%046_R-%TT%%CC%04601" RefId="%AID%_O-%TT%%CC%046" Text="{{0:%C%}}: Effekt Option 3" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Feature 1 -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%047_R-%TT%%CC%04701" RefId="%AID%_O-%TT%%CC%047" Text="{{0:%C%}}: Effekt Feature 1" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Feature 2 -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%048_R-%TT%%CC%04801" RefId="%AID%_O-%TT%%CC%048" Text="{{0:%C%}}: Effekt Feature 2" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
+              <!-- Effekt Feature 3 -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%049_R-%TT%%CC%04901" RefId="%AID%_O-%TT%%CC%049" Text="{{0:%C%}}: Effekt Feature 3" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
               <!-- Preset -->
               <ComObjectRef Id="%AID%_O-%TT%%CC%018_R-%TT%%CC%01801" RefId="%AID%_O-%TT%%CC%018" Text="{{0:%C%}}: Voreinstellung" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
               <!-- Preset Status -->
@@ -218,14 +262,6 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%038_R-%TT%%CC%03801" RefId="%AID%_O-%TT%%CC%038" Text="{{0:%C%}}: HSV Relativ" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
               <!-- RGBWRel -->
               <ComObjectRef Id="%AID%_O-%TT%%CC%039_R-%TT%%CC%03901" RefId="%AID%_O-%TT%%CC%039" Text="{{0:%C%}}: RGBW Relativ" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
-              <!-- Segment Power -->
-              <ComObjectRef Id="%AID%_O-%TT%%CC%040_R-%TT%%CC%04001" RefId="%AID%_O-%TT%%CC%040" Text="{{0:%C%}}: Ein/Aus" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
-              <!-- Segment Power State -->
-              <ComObjectRef Id="%AID%_O-%TT%%CC%041_R-%TT%%CC%04101" RefId="%AID%_O-%TT%%CC%041" Text="{{0:%C%}}: Ein/Aus Status" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
-              <!-- Segment Brightness -->
-              <ComObjectRef Id="%AID%_O-%TT%%CC%042_R-%TT%%CC%04201" RefId="%AID%_O-%TT%%CC%042" Text="{{0:%C%}}: Helligkeit" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
-              <!-- Segment Brightness State -->
-              <ComObjectRef Id="%AID%_O-%TT%%CC%043_R-%TT%%CC%04301" RefId="%AID%_O-%TT%%CC%043" Text="{{0:%C%}}: Helligkeit Status" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001"/>
             </ComObjectRefs>
           </Static>   
           <Dynamic>
@@ -246,10 +282,10 @@
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%053_R-%TT%%CC%05301" IndentLevel="1" HelpContext="%DOC%"/>
                     <!-- Spacing  -->
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%054_R-%TT%%CC%05401" IndentLevel="1" HelpContext="%DOC%"/>
+                    <!-- Power On Behaviour  -->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%067_R-%TT%%CC%06701" IndentLevel="1" HelpContext="%DOC%"/>
                     <!-- ReverseDirection  -->
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%055_R-%TT%%CC%05501" IndentLevel="1" HelpContext="%DOC%"/>
-                    <!-- Spiegelung des Effekts -->
-                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%056_R-%TT%%CC%05601" IndentLevel="1" HelpContext="%DOC%"/>
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <!-- ========================================================================================================= -->
@@ -260,6 +296,10 @@
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%058_R-%TT%%CC%05801" IndentLevel="1" HelpContext="%DOC%"/>
                     <!-- Effect Intensity -->
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%059_R-%TT%%CC%05901" IndentLevel="1" HelpContext="%DOC%"/>
+                    <!-- Spiegelung des Effekts -->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%056_R-%TT%%CC%05601" IndentLevel="1" HelpContext="%DOC%"/>
+                    <!-- Reverse Direction des Effekts -->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%066_R-%TT%%CC%06601" IndentLevel="1" HelpContext="%DOC%"/>
                     <!-- Effect Option 1 -->
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%060_R-%TT%%CC%06001" IndentLevel="1" HelpContext="%DOC%"/>
                     <!-- Effect Option 2 -->
@@ -273,6 +313,14 @@
                     <!-- Effect Feature 3 -->
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%065_R-%TT%%CC%06501" IndentLevel="1" HelpContext="%DOC%"/>
 
+                    <!-- Segment Power -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%040_R-%TT%%CC%04001" />
+                    <!-- Segment Power State -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%041_R-%TT%%CC%04101" />
+                    <!-- Segment Brightness -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%042_R-%TT%%CC%04201" />
+                    <!-- Segment Brightness State -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%043_R-%TT%%CC%04301" />
                     <!-- R -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" />
                     <!-- G -->
@@ -299,6 +347,22 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%016_R-%TT%%CC%01601" />
                     <!-- Fx Status -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%017_R-%TT%%CC%01701" />
+                    <!-- Effect Speed  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%050_R-%TT%%CC%05001" />
+                    <!-- Effect Intensity  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%051_R-%TT%%CC%05101" />
+                    <!-- Effect Option 1  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%044_R-%TT%%CC%04401" />
+                    <!-- Effect Option 2  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%045_R-%TT%%CC%04501" />
+                    <!-- Effect Option 3  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%046_R-%TT%%CC%04601" />
+                    <!-- Effect Feature 1  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%047_R-%TT%%CC%04701" />
+                    <!-- Effect Feature 2  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%048_R-%TT%%CC%04801" />
+                    <!-- Effect Feature 3  -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%049_R-%TT%%CC%04901" />
                     <!-- Preset -->
                     <!-- <ComObjectRefRef RefId="%AID%_O-%TT%%CC%018_R-%TT%%CC%01801" /> -->
                     <!-- Preset Status -->
@@ -343,14 +407,6 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%038_R-%TT%%CC%03801" />
                     <!-- RGBWRel -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%039_R-%TT%%CC%03901" />
-                    <!-- Segment Power -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%040_R-%TT%%CC%04001" />
-                    <!-- Segment Power State -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%041_R-%TT%%CC%04101" />
-                    <!-- Segment Brightness -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%042_R-%TT%%CC%04201" />
-                    <!-- Segment Brightness State -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%043_R-%TT%%CC%04301" />
                   </ParameterBlock>
                 </when>
               </choose>

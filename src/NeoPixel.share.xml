@@ -98,6 +98,10 @@
                 <Enumeration Text="Pulse"                 Value="18" Id="%ENID%"/>
                 <Enumeration Text="Comet"                 Value="19" Id="%ENID%"/>
                 <Enumeration Text="Meteor"                Value="20" Id="%ENID%"/>
+                <Enumeration Text="Noise"                 Value="21" Id="%ENID%"/>
+                <Enumeration Text="Palette"               Value="22" Id="%ENID%"/>
+                <Enumeration Text="Lightning"             Value="23" Id="%ENID%"/>
+                <Enumeration Text="Gradient"              Value="24" Id="%ENID%"/>
               </TypeRestriction>
               </ParameterType>
               <!-- Led Types -->
@@ -251,6 +255,14 @@
               <!-- NumberOfSegments -->
               <ParameterType Id="%AID%_PT-NumberOfSegments" Name="NumberOfSegments">
                 <TypeNumber SizeInBit="5" Type="unsignedInt" minInclusive="1" maxInclusive="16" />
+              </ParameterType>
+              <!-- Power-On Behaviour -->
+              <ParameterType Id="%AID%_PT-NEOPowerOnBehaviour" Name="NEOPowerOnBehaviour">
+                <TypeRestriction Base="Value" SizeInBit="3">
+                  <Enumeration Text="Aus"               Value="0" Id="%ENID%" />
+                  <Enumeration Text="Letzter Zustand"   Value="1" Id="%ENID%" />
+                  <Enumeration Text="Standard-Farbe"    Value="2" Id="%ENID%" /> 
+                </TypeRestriction>
               </ParameterType>
               <!-- Virtual Strip Selection for exactly 1 strip -->
               <ParameterType Id="%AID%_PT-VirtualStripSelect1" Name="VirtualStripSelect1">
@@ -597,14 +609,20 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                 <ParameterBlock Id="%AID%_PB-nnn" Name="Globale Einstellungen" Text="Globale Einstellungen" Inline="true" ShowInComObjectTree="true">
-                  <!-- Global Power KO -->
-                  <ComObjectRefRef RefId="%AID%_O-%TT%00000_R-%TT%0000001"  />
-                  <!-- Global Power State KO -->
-                  <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
-                  <!-- Global Brightness KO -->
-                  <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
-                  <!-- Global Brightness State KO -->
-                  <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                  
+                  <choose ParamRefId="%AID%_UP-%TT%00021_R-%TT%0002101">
+                      <!-- Mehr als 1 Segment definiert-->
+                      <when test=">1">
+                        <!-- Global Power KO -->
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00000_R-%TT%0000001"  />
+                        <!-- Global Power State KO -->
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
+                        <!-- Global Brightness KO -->
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
+                        <!-- Global Brightness State KO -->
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                      </when>
+                  </choose>
                 </ParameterBlock>
                 <!-- ========================================================================================================= -->
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="HCL Kurve" UIHint="Headline" />

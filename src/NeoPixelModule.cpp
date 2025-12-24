@@ -333,6 +333,62 @@ void NeoPixelBusModule::processInputKo(GroupObject& ko)
 
         switch (koIndex)
         {
+            case NEO_KoFxSpeed:
+            {
+                uint8_t value = ko.value(DPT_Value_1_Ucount); // 5.010
+                logInfoP("Segment %d Fx Speed: %d", channel, value);
+                targetSegment->getConfig().speed = value;
+                break;
+            }
+            case NEO_KoFxIntensity:
+            {
+                uint8_t value = ko.value(DPT_Value_1_Ucount); // 5.010
+                logInfoP("Segment %d Fx Intensity: %d", channel, value);
+                targetSegment->getConfig().intensity = value;
+                break;
+            }
+            case NEO_KoFxOption1:
+            {
+                uint8_t value = ko.value(DPT_Value_1_Ucount); // 5.010
+                logInfoP("Segment %d Fx Option1: %d", channel, value);
+                targetSegment->getConfig().option1 = value;
+                break;
+            }
+            case NEO_KoFxOption2:
+            {
+                uint8_t value = ko.value(DPT_Value_1_Ucount); // 5.010
+                logInfoP("Segment %d Fx Option2: %d", channel, value);
+                targetSegment->getConfig().option2 = value;
+                break;
+            }
+            case NEO_KoFxOption3:
+            {
+                uint8_t value = ko.value(DPT_Value_1_Ucount); // 5.010
+                logInfoP("Segment %d Fx Option3: %d", channel, value);
+                targetSegment->getConfig().option3 = value;
+                break;
+            }
+            case NEO_KoFxFeature1:
+            {
+                bool value = ko.value(DPT_Switch);
+                logInfoP("Segment %d Fx Feature1: %s", channel, value ? "ON" : "OFF");
+                targetSegment->getConfig().feature1 = value;
+                break;
+            }
+            case NEO_KoFxFeature2:
+            {
+                bool value = ko.value(DPT_Switch);
+                logInfoP("Segment %d Fx Feature2: %s", channel, value ? "ON" : "OFF");
+                targetSegment->getConfig().feature2 = value;
+                break;
+            }
+            case NEO_KoFxFeature3:
+            {
+                bool value = ko.value(DPT_Switch);
+                logInfoP("Segment %d Fx Feature3: %s", channel, value ? "ON" : "OFF");
+                targetSegment->getConfig().feature3 = value;
+                break;
+            }
             case NEO_KoR:
             {
                 uint8_t red = ko.value(DPT_Value_1_Ucount); // 5.010
@@ -2469,12 +2525,12 @@ void NeoPixelBusModule::updateColorCorrection()
     // Update color correction parameters on VirtualStrip
     // (These are applied during rendering, NOT in-place!)
     // NOTE: setColorCorrection removed from VirtualStrip - color correction deactivated for now
-    /*     if (_virtualStrip) {
-          _virtualStrip->setColorCorrection(
-            _gammaCorrectionEnabled, _gammaValue,
-            _whiteBalanceEnabled, _whiteBalanceRed, _whiteBalanceGreen, _whiteBalanceBlue,
-            _swapMode
-          );
+    /*     if (_virtualStrip)
+        {
+            _virtualStrip->setColorCorrection(
+                _gammaCorrectionEnabled, _gammaValue,
+                _whiteBalanceEnabled, _whiteBalanceRed, _whiteBalanceGreen, _whiteBalanceBlue,
+                _swapMode);
         } */
 }
 
@@ -2644,12 +2700,38 @@ NeoPixelBusModule::SegmentConfig NeoPixelBusModule::createSegmentConfig(uint8_t 
         config.endLed = temp;
     }
 
-    // Ensure segment fits within total LED count
-    if (config.endLed >= _totalLeds)
+    // Ensure segment fits within total LED count (0.._totalLeds-1)
+    if (_totalLeds == 0)
     {
-        logWarningP("Segment %d: End LED(%d) exceeds total LEDs(%d), adjusting",
-                    segmentIndex, config.endLed, _totalLeds);
-        config.endLed = _totalLeds - 1;
+        logErrorP("Segment %d: _totalLeds is 0, cannot create segment", segmentIndex);
+        config.startLed = 0;
+        config.endLed = 0;
+    }
+    else
+    {
+        const uint16_t maxIdx = static_cast<uint16_t>(_totalLeds - 1);
+
+        if (config.startLed > maxIdx)
+        {
+            logWarningP("Segment %d: Start LED(%u) exceeds max index(%u), adjusting",
+                        segmentIndex, config.startLed, maxIdx);
+            config.startLed = maxIdx;
+        }
+
+        if (config.endLed > maxIdx)
+        {
+            logWarningP("Segment %d: End LED(%u) exceeds max index(%u), adjusting",
+                        segmentIndex, config.endLed, maxIdx);
+            config.endLed = maxIdx;
+        }
+
+        // Re-check ordering after clamping
+        if (config.startLed > config.endLed)
+        {
+            logWarningP("Segment %d: Range inverted after clamp - swapping Start(%u) End(%u)",
+                        segmentIndex, config.startLed, config.endLed);
+            std::swap(config.startLed, config.endLed);
+        }
     }
 
     // Restore original channel index
@@ -2911,91 +2993,63 @@ Effect* NeoPixelBusModule::getEffectFromType(uint8_t effectType)
 void NeoPixelBusModule::setupEffectConfiguration(Segment* segment)
 {
     if (!segment) return;
-
     // Get ETS effect parameters for current channel
     auto& config = segment->getConfig();
 
-    // Basic effect parameters from ETS
-    config.speed = ParamNEO_NEOEffectSpeed;         // Effect speed (0-255)
-    config.intensity = ParamNEO_NEOEffectIntensity; // Effect intensity (0-255)
+    // ---- Basic ETS effect parameters ----
+    config.speed = ParamNEO_NEOEffectSpeed;         // 0..255
+    config.intensity = ParamNEO_NEOEffectIntensity; // 0..255
 
-    // Apply fallback for intensity if 0 (many effects use this for brightness)
-    if (config.intensity == 0) config.intensity = 20;
+    config.option1 = ParamNEO_NEOEffectOption1; // 0..255
+    config.option2 = ParamNEO_NEOEffectOption2; // 0..255
+    config.option3 = ParamNEO_NEOEffectOption3; // 0..255
 
-    // Extended effect parameters
-    config.option1 = ParamNEO_NEOEffectOption1; // Custom option 1
-    config.option2 = ParamNEO_NEOEffectOption2; // Custom option 2
-    config.mode = ParamNEO_NEOEffectOption3;    // Effect mode
+    // ---- Flags / features ----
+    config.reverse = 0; // TODO: add parameter to ETS
+    config.feature1 = ParamNEO_NEOEffectFeature1 ? true : false;
+    config.feature2 = ParamNEO_NEOEffectFeature2 ? true : false;
+    config.feature3 = ParamNEO_NEOEffectFeature3 ? true : false;
 
-    // Effect features (boolean flags)
-    config.reverse = ParamNEO_NEOEffectFeature1 ? 1 : 0; // Reverse direction
-    // Feature2 and Feature3 could be used for other boolean options
-
-    // Initialize effect-specific state parameters
-    Effect* effect = segment->getEffect();
-    if (effect)
+    // ---- Push parameters into effect API ----
+    if (Effect* effect = segment->getEffect())
     {
-        uint8_t paramCount = effect->getParameterCount();
-
-        // Standard ETS parameter mapping for effects:
-        //   Parameter 0 → ETS "Effekt Speed" (animation/movement speed)
-        //   Parameter 1 → ETS "Effekt Option 1" (color/hue/primary effect parameter)
-        //   Parameter 2 → ETS "Effekt Option 2" (size/mode/secondary parameter)
-        //   Parameter 3 → ETS "Effekt Option 3" (tertiary parameter)
-        //   Brightness  → ETS "Effekt Intensity" (stored in config.intensity)
-        //
-        // Cylon example:
-        //   Speed=122 → Cylon movement speed (0=auto, higher=faster)
-        //   Intensity=255 → Eye brightness
-        //   Option1=0 → Hue (0=red, 85=green, 170=blue, 212=magenta)
-        //   Option2=4 → EyeSize (1-10)
-        //   Option3=40 → FadeAmount (trail fade speed, 1-255)
+        const uint8_t paramCount = effect->getParameterCount();
 
         for (uint8_t i = 0; i < paramCount; i++)
         {
             uint32_t value = effect->getParameterDefault(i);
 
-            // Map ETS parameters to effect parameters
+            // Standard ETS mapping (0 is VALID -> do not gate with >0)
             switch (i)
             {
-                case 0:
-                    // Parameter 0: ETS Speed
-                    if (config.speed > 0) value = config.speed;
-                    break;
-                case 1:
-                    // Parameter 1: ETS Option 1
-                    if (config.option1 > 0) value = config.option1;
-                    break;
-                case 2:
-                    // Parameter 2: ETS Option 2 or Option 3 (fallback)
-                    if (config.option2 > 0) value = config.option2;
-                    else if (config.mode > 0)
-                        value = config.mode;
-                    break;
-                case 3:
-                    // Parameter 3: ETS Option 3
-                    if (config.mode > 0) value = config.mode;
-                    break;
-                    // Parameter 4+ use effect defaults only
+                case 0: value = config.speed; break;   // Speed
+                case 1: value = config.option1; break; // Option 1
+                case 2: value = config.option2; break; // Option 2
+                case 3: value = config.option3; break; // Option 3
+                default: break;                        // 4+ keep effect defaults
             }
 
             effect->setParameter(segment, i, value);
         }
+        // Mirror effect (from segment configuration)
+        bool mirrorEffect = ParamNEO_NEOSegmentMirrorEffect;
+        if (mirrorEffect)
+        {
+            // Note: Mirror effect would need to be implemented in the segment update logic
+            logInfoP("Mirror effect enabled for segment");
+        }
 
-        logInfoP("Effect '%s': Speed=%d, Int=%d, Opt1=%d, Opt2=%d, Opt3=%d",
-                 effect->getName(), config.speed, config.intensity,
-                 config.option1, config.option2, config.mode);
+        logInfoP("Effect '%s': Speed=%u Int=%u Opt1=%u Opt2=%u Opt3=%u Rev=%u F1(mirror)=%u F2(yellow)=%u F3(green)=%u SegMirror=%u",
+                 effect->getName(),
+                 (unsigned)config.speed,
+                 (unsigned)config.intensity,
+                 (unsigned)config.option1,
+                 (unsigned)config.option2,
+                 (unsigned)config.option3,
+                 (unsigned)config.reverse,
+                 (unsigned)config.feature1,
+                 (unsigned)config.feature2,
+                 (unsigned)config.feature3,
+                 (unsigned)(ParamNEO_NEOSegmentMirrorEffect ? 1 : 0));
     }
-
-    // Mirror effect (from segment configuration)
-    bool mirrorEffect = ParamNEO_NEOSegmentMirrorEffect;
-    if (mirrorEffect)
-    {
-        // Note: Mirror effect would need to be implemented in the segment update logic
-        logInfoP("Mirror effect enabled for segment");
-    }
-
-    logInfoP("Effect config: Speed=%d, Intensity=%d, Options=[%d,%d,%d], Reverse=%d, Mirror=%s",
-             config.speed, config.intensity, config.option1, config.option2, config.mode,
-             config.reverse, mirrorEffect ? "YES" : "NO");
 }
